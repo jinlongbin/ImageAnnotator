@@ -39,7 +39,7 @@ class ImageAnnotator:
     def select_folder(self):
         self.main_folder_path = filedialog.askdirectory()  # Store the selected main folder path
         if self.main_folder_path:
-            self.group_folder_path = os.path.join(self.main_folder_path, "11")
+            self.group_folder_path = os.path.join(self.main_folder_path, "group")
             self.single_folder_path = os.path.join(self.main_folder_path, "single")
             self.children = self.load_children(self.single_folder_path)
             self.image_files = os.listdir(self.group_folder_path)
