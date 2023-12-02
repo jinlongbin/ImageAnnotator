@@ -32,7 +32,7 @@ selected folder
 ```
 
 ## How to Use
-To effectively utilize the ImageAnnotatorPro tool, follow these simple steps:
+To effectively utilize the ImageAnnotator tool, follow these simple steps:
 
 1. **Launch the Application:** Start by running the Python script.
 
