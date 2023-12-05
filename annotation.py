@@ -43,6 +43,7 @@ class ImageAnnotator:
             self.single_folder_path = os.path.join(self.main_folder_path, "single")
             self.children = self.load_children(self.single_folder_path)
             self.image_files = os.listdir(self.group_folder_path)
+            self.image_files = [file for file in self.image_files if file.endswith(('.jpeg', '.jpg', '.png'))]
             self.setup_annotation_controls()
             self.load_image()
             self.select_folder_button.destroy()  # Remove the select folder button
