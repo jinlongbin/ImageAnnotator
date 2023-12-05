@@ -93,7 +93,7 @@ class ImageAnnotator:
     def resize_image(self, image):
         """Resize the image so that its largest axis does not exceed 1000 pixels."""
         max_size = (1000, 720)  # Resize considering the canvas size
-        image.thumbnail(max_size, Image.ANTIALIAS)
+        image.thumbnail(max_size, Image.Resampling.LANCZOS)
         return image
 
     def load_image(self):
