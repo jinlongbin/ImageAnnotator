@@ -9,7 +9,7 @@ import json
 import datetime
 from tkinter import *
 from tkinter import filedialog, messagebox
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ExifTags
 
 class ImageAnnotator:
     def __init__(self, root):
@@ -45,6 +45,7 @@ class ImageAnnotator:
             self.image_files = os.listdir(self.group_folder_path)
             self.image_files = [file for file in self.image_files if file.endswith(('.jpeg', '.jpg', '.png'))]
             self.image_files = sorted(self.image_files, key=lambda x: x.split('.')[0])
+
             self.setup_annotation_controls()
             self.load_image()
             self.select_folder_button.destroy()  # Remove the select folder button
@@ -100,6 +101,24 @@ class ImageAnnotator:
     def load_image(self):
         image_path = os.path.join(self.group_folder_path, self.image_files[self.current_image_index])
         self.original_image = Image.open(image_path)
+
+        # Check for and apply EXIF orientation data
+        try:
+            for orientation in ExifTags.TAGS.keys():
+                if ExifTags.TAGS[orientation] == 'Orientation':
+                    break
+            exif = dict(self.original_image._getexif().items())
+
+            if exif[orientation] == 3:
+                self.original_image = self.original_image.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                self.original_image = self.original_image.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                self.original_image = self.original_image.rotate(90, expand=True)
+        except (AttributeError, KeyError, IndexError):
+            # No EXIF data or orientation data not found
+            pass
+
         self.resized_image = self.resize_image(self.original_image.copy())
         self.scale_factor = max(self.original_image.size[0] / self.resized_image.size[0], 
                                 self.original_image.size[1] / self.resized_image.size[1])
